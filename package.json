@@ -1,0 +1,11 @@
+{
+  "name": "es6tpl",
+  "version": "1.0.0",
+  "description": "ES6 模板 `hello ${name}` 标签模板: function `hello ${name}`",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fed123.com",
+  "license": "ISC"
+}
