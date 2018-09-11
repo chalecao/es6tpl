@@ -2,7 +2,7 @@
  * generate uuid
  */
 function uuid() {
-    return Math.floor(Math.random() * 1000000)
+    return "_" + Date.now()
 }
 /**
  * if es6 tpl mix an element, append element later
@@ -16,7 +16,7 @@ function handleElement(arg) {
             id,
             node: arg
         },
-        str: `<div id="${id}" /></div>`
+        str: `<div class="${id}" /></div>`
     }
 }
 /**
@@ -37,7 +37,7 @@ function handleEvent(arg) {
             type: "event",
             events
         },
-        str: `id="${id}"`,
+        str: `class="${id}"`,
     }
 }
 /**
@@ -45,11 +45,9 @@ function handleEvent(arg) {
  * @param {*} s 
  */
 function str2frag(s) {
-    let docfrag = document.createDocumentFragment()
     let node = document.createElement("div")
     node.innerHTML = s
-    docfrag.append(node)
-    return docfrag
+    return node
 }
 /**
  *  
@@ -83,17 +81,17 @@ export function nodeTpl(template) {
     }
     let docfrag = str2frag(s)
     rules.forEach(rul => {
-        let oldNode = docfrag.getElementById(rul.id);
+        if (!rul) return;
+        let oldNode = docfrag.querySelector(`.${rul.id}`);
         if (rul.type == "event") {
-            rul.events.forEach(evt => {
+            rul.events && rul.events.forEach(evt => {
                 oldNode.addEventListener(evt.evtName, evt.evtHandler)
             })
         } else if (rul.type == "element") {
             oldNode.parentNode.replaceChild(rul.node, oldNode)
         }
     })
-    let child = docfrag.childNodes[0]
-    return child.childNodes.length > 1 ? child : child.childNodes[0]
+    return docfrag
 }
 /**
  * safe tpl with XSS defend
@@ -111,6 +109,5 @@ export function safeTpl(template) {
         s += template[i];
     }
     let docfrag = str2frag(s)
-    let child = docfrag.childNodes[0]
-    return child.childNodes.length > 1 ? child : child.childNodes[0]
+    return docfrag
 }
