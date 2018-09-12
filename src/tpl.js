@@ -2,7 +2,7 @@
  * generate uuid
  */
 function uuid() {
-    return "_" + Date.now()
+    return "_" + Math.floor(Math.random() * Date.now())
 }
 /**
  * if es6 tpl mix an element, append element later
